@@ -3,9 +3,10 @@
 
 %Emma Reznick 2021
 %Emma Reznick 2022
-    %Updates:
-    %-added subject details
-    %-added AMTI and Kistler Force Plates
+%Updates:
+%-added subject details
+%-added AMTI and Kistler Force Plates
+%-does not collect data from unchecked subjects
 
 %% Connect to Vicon Nexus
 addpath('C:\Program Files (x86)\Vicon\Nexus2.12\SDK\Matlab')
@@ -18,7 +19,7 @@ structureName = input('Structure Name:','s');
     'Select One or More Files', ...
     'MultiSelect', 'on');
 
-targetPath = pwd%'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
+targetPath = data_path; %%FILL IN
 
 %Select Desired Trials
 bool_FP = false;        %force plate
@@ -53,45 +54,95 @@ for t = 1:trialNum
             trialName = trial(1:end-4);
         end
         trialPath = [data_path, trialName];
+        disp(['Opening ' trialName])
         vicon.OpenTrial(trialPath,30)
-        trialName = trialName(find(~isspace(trialName)));
+        trialNameClean = trialName(find(~isspace(trialName)));
         
         %% Raw Data
         if bool_FP
-            Data.(trialName).(subject{s}).ForcePlate = PullForcePlateViconFRB(vicon);
+            try
+                Data.(trialNameClean).(subject{s}).ForcePlate = PullForcePlateViconFRB(vicon);
+                disp('    Force Plates Collected')
+            catch
+                disp('    No FP Data')
+            end
+            
         end
         if bool_marker
-            Data.(trialName).(subject{s}).Markers = PullMarkerViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).(subject{s}).Markers = PullMarkerViconFRB(vicon, subject{s});
+                disp('    Markers Collected')
+            catch
+                disp('    No Marker Data')
+            end
         end
         %% Modeled Kinematics
         if bool_Jangle
-            Data.(trialName).(subject{s}).JointAngle = PullJointAngleViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).(subject{s}).JointAngle = PullJointAngleViconFRB(vicon, subject{s});
+                disp('    Joint Angles Collected')
+            catch
+                disp('    No Joint Angle Data')
+            end
         end
         if bool_Jvel
-            Data.(trialName).JointVelocity = PullJointVelocityViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).JointVelocity = PullJointVelocityViconFRB(vicon, subject{s});
+                disp('    Joint Velocity Collected')
+            catch
+                disp('    No Joint Velocity Data')
+            end
         end
         
         %% Modeled Kinetics
         if bool_Jmom
-            Data.(trialName).(subject{s}).JointMoment = PullJointMomentViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).(subject{s}).JointMoment = PullJointMomentViconFRB(vicon, subject{s});
+                disp('    Joint Moments Collected')
+            catch
+                disp('    No Joint Moment Data')
+            end
         end
         if bool_Jforce
-            Data.(trialName).(subject{s}).JointForce = PullJointForceViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).(subject{s}).JointForce = PullJointForceViconFRB(vicon, subject{s});
+                disp('    Joint Forces Collected')
+            catch
+                disp('    No Joint Force Data')
+            end
         end
         if bool_Jpow
-            Data.(trialName).(subject{s}).JointPower = PullJointPowerViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).(subject{s}).JointPower = PullJointPowerViconFRB(vicon, subject{s});
+                disp('    Joint Powers Collected')
+            catch
+                disp('    No Joint Power Data')
+            end
         end
         
         %% Misc Data
         if bool_event
             %if you want to add other events, input the name as a third argument as a string
-            Data.(trialName).(subject{s}).Events = PullEventsViconFRB(vicon, subject{s}, 'hopStart');
+            try
+                Data.(trialNameClean).(subject{s}).Events = PullEventsViconFRB(vicon, subject{s}, 'hopStart');
+                disp('    Events Collected')
+            catch
+                disp('    No Events Data')
+            end
         end
         if bool_subDet
-            Data.(trialName).(subject{s}).SubjectDetails = PullSubjectDetailsViconFRB(vicon, subject{s});
+            try
+                Data.(trialNameClean).(subject{s}).SubjectDetails = PullSubjectDetailsViconFRB(vicon, subject{s});
+                disp('    Subject Details Collected')
+            catch
+                disp('    No Subject Details')
+            end
         end
     end
 end
 cd(targetPath);
 eval([structureName ' = Data;']);
 save(structureName,structureName,'-v7.3')
+disp('Mischef Managed')
+
+
