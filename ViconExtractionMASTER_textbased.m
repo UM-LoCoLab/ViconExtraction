@@ -18,18 +18,18 @@ structureName = input('Structure Name:','s');
     'Select One or More Files', ...
     'MultiSelect', 'on');
 
-targetPath = 'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
+targetPath = pwd%'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
 
 %Select Desired Trials
-bool_FP = true;
-bool_marker = true;
-bool_Jangle = false;
-bool_Jvel = false;
-bool_Jmom = false;
-bool_Jforce = false;
-bool_Jpow = false;
-bool_event = true;
-bool_subDet = false;
+bool_FP = false;        %force plate
+bool_marker = true;     %markers
+bool_Jangle = false;    %joint angles
+bool_Jvel = false;      %joint velocity
+bool_Jmom = false;      %joint moment
+bool_Jforce = false;    %joint angles
+bool_Jpow = false;      %joint powers
+bool_event = false;     %events
+bool_subDet = false;    %subject details
 
 %Loop Through Trials
 if iscell(trial)
@@ -40,8 +40,12 @@ end
 
 for t = 1:trialNum
     %Check for multiple subjects
-    subject = vicon.GetSubjectInfo;
+    [subject, ~, active] = vicon.GetSubjectInfo;
     for s = 1:numel(subject)
+        %check to see if subject is checked
+        if ~active(s)
+            continue
+        end
         
         try
             trialName = trial{t}(1:end-4);
@@ -50,7 +54,7 @@ for t = 1:trialNum
         end
         trialPath = [data_path, trialName];
         vicon.OpenTrial(trialPath,30)
-        
+        trialName = trialName(find(~isspace(trialName)));
         
         %% Raw Data
         if bool_FP
