@@ -1,5 +1,5 @@
 %Save Vicon Data Into Matlab Struct
-%VICON EXTRACTION MASTER
+%VICON EXTRACTION LEADER
 
 %Emma Reznick 2021
 %Emma Reznick 2022
