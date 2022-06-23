@@ -9,13 +9,12 @@ try %Plug in Gait
         Details{n, 2} = vicon.GetSubjectParam(subject, paramNames{n});
     end
 catch %Other types of subjects
-    vicon.GetSubjectParamNames(subject)
+    paramNames = vicon.GetSubjectParamNames(subject);
     for n = 1:numel(paramNames)
         Details{n, 1} = paramNames{n};
         Details{n, 2} = vicon.GetSubjectParam(subject, paramNames{n});
     end
 end
-
 
 
 

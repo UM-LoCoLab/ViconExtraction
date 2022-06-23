@@ -2,42 +2,9 @@
 %VICON EXTRACTION MASTER
 
 %Emma Reznick 2021
-%Emma Reznick 2022
-%Updates:
-%-added subject details
-%-added AMTI and Kistler Force Plates
-%-gloabal CoP
 
-%% Connect to Vicon Nexus
-addpath('C:\Program Files (x86)\Vicon\Nexus2.12\SDK\Matlab')
-addpath('C:\Program Files (x86)\Vicon\Nexus2.12\SDK\Win64')
-vicon = ViconNexus;
-
-structureName = input('Structure Name:','s');
-
-[trial,data_path] = uigetfile('*.x1d',...
-    'Select One or More Files', ...
-    'MultiSelect', 'on');
-
-targetPath = pwd;%pwd'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
-
-%Select Desired Trials
-bool_FP = true;
-bool_marker = true;
-bool_Jangle = true;
-bool_Jvel = true;
-bool_Jmom = true;
-bool_Jforce = true;
-bool_Jpow = true;
-bool_event = true;
-bool_subDet = true;
-
-%Loop Through Trials
-if iscell(trial)
-    trialNum = numel(trial);
-else
-    trialNum = 1;
-end
+function ViconExtractionLEADER(vicon, structureName, trial, data_path, targetPath, bool_marker, bool_FP, bool_Jangle,...
+    bool_Jvel, bool_Jmom, bool_Jpow, bool_Jforce, bool_event, bool_subDet)
 
 %Loop Through Trials
 if iscell(trial)
@@ -153,3 +120,4 @@ eval([structureName ' = Data;']);
 clear Data
 save(structureName,structureName,'-v7.3')
 disp('Mischief Managed')
+end
