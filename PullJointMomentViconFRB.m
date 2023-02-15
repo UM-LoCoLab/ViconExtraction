@@ -6,7 +6,7 @@ for o = 1:numel(outputs)
             JointMoment.(outputs{o}) = vicon.GetModelOutput(subject, outputs{o})';
             JointMoment.(outputs{o})(:,1) = JointMoment.(outputs{o})(:,1)*-1;
         catch
-            disp(['        Error Collecting ' outputs{o}]);
+            fprintf(['        Error Collecting ' outputs{o} '\n']);
         end
     else
         continue

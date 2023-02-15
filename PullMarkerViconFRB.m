@@ -2,7 +2,7 @@ function Markers = PullMarkerViconFRB(vicon, subject)
 try
     marker = vicon.GetMarkerNames(subject);
 catch
-    display(['        No Marker Data For ' subject])
+    fprintf(['        No Marker Data For ' subject '\n'])
     return
 end
 for m = 1:numel(marker)
@@ -10,7 +10,7 @@ for m = 1:numel(marker)
         [x,y,z,e] = vicon.GetTrajectory(subject, marker{m});
         Markers.(marker{m})  = [x', y', z', e'];
     catch
-        display(['        Error Collecting Marker Data For ' marker{m}])
+        fprintf(['        Error Collecting Marker Data For ' marker{m} '\n'])
     end
 end
 

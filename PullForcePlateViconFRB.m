@@ -25,7 +25,7 @@ for i = 1:numel(deviceIDs)
                 ,vicon.GetDeviceChannelGlobal(deviceIDs(i),j,2)',vicon.GetDeviceChannelGlobal(deviceIDs(i),j,3)'];
         end
     catch
-        disp(['        Error collecting ' DeviceName])
+        fprintf(['        Error collecting ' DeviceName '\n'])
     end
 end
 
