@@ -7,6 +7,7 @@
 %-added subject details
 %-added AMTI and Kistler Force Plates
 %-gloabal CoP
+%Emma Reznick 2023 -- updated to match GUI
 
 %% Connect to Vicon Nexus
 addpath('C:\Program Files (x86)\Vicon\Nexus2.12\SDK\Matlab')
@@ -19,25 +20,19 @@ structureName = input('Structure Name:','s');
     'Select One or More Files', ...
     'MultiSelect', 'on');
 
-targetPath = pwd;%pwd'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
+%targetPath = pwd;%pwd'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
+targetPath = 'E:\Cara\TFExperiments\TF03\070822';
 
 %Select Desired Trials
-bool_FP = true;
+bool_FP = false;
 bool_marker = true;
 bool_Jangle = true;
-bool_Jvel = true;
-bool_Jmom = true;
-bool_Jforce = true;
-bool_Jpow = true;
-bool_event = true;
-bool_subDet = true;
-
-%Loop Through Trials
-if iscell(trial)
-    trialNum = numel(trial);
-else
-    trialNum = 1;
-end
+bool_Jvel = false;
+bool_Jmom = false;
+bool_Jforce = false;
+bool_Jpow = false;
+bool_event = false;
+bool_subDet = false;
 
 %Loop Through Trials
 if iscell(trial)
@@ -47,58 +42,58 @@ else
 end
 
 for t = 1:trialNum
+    try
+        trialName = trial{t}(1:end-4);
+    catch
+        trialName = trial(1:end-4);
+    end
+    trialPath = [data_path, trialName];
+    fprintf(['Opening ' trialName '\n'])
+    vicon.OpenTrial(trialPath,30)
+    trialNameClean = trialName(find(~isspace(trialName)));
     %Check for multiple subjects
     [subject, ~, active] = vicon.GetSubjectInfo;
     for s = 1:numel(subject)
         %check to see if subject is checked
+        fprintf(['  Processing Subject: ' subject{s} '\n'])
         if ~active(s)
+             fprintf(['   Subject ' subject{s} ' Skipped (Not Checked)\n'])
             continue
         end
-        
-        try
-            trialName = trial{t}(1:end-4);
-        catch
-            trialName = trial(1:end-4);
-        end
-        trialPath = [data_path, trialName];
-        disp(['Opening ' trialName])
-        vicon.OpenTrial(trialPath,30)
-        trialNameClean = trialName(find(~isspace(trialName)));
-        
-        
- %% Raw Data
+
+    %%Raw Data
         if bool_FP
             try
                 Data.(trialNameClean).(subject{s}).ForcePlate = PullForcePlateViconFRB(vicon);
-                disp('    Force Plates Collected')
+                fprintf('    Force Plates Collected\n')
             catch
-                disp('    No FP Data')
+                fprintf('    No FP Data\n')
             end
             
         end
         if bool_marker
             try
                 Data.(trialNameClean).(subject{s}).Markers = PullMarkerViconFRB(vicon, subject{s});
-                disp('    Markers Collected')
+                fprintf('    Markers Collected\n')
             catch
-                disp('    No Marker Data')
+                fprintf('    No Marker Data\n')
             end
         end
         %% Modeled Kinematics
         if bool_Jangle
             try
                 Data.(trialNameClean).(subject{s}).JointAngle = PullJointAngleViconFRB(vicon, subject{s});
-                disp('    Joint Angles Collected')
+                fprintf('    Joint Angles Collected\n')
             catch
-                disp('    No Joint Angle Data')
+                fprintf('    No Joint Angle Data\n')
             end
         end
         if bool_Jvel
             try
-                Data.(trialNameClean).(subject{s}).JointVelocity = PullJointVelocityViconFRB(vicon, subject{s});
-                disp('    Joint Velocity Collected')
+                Data.(trialNameClean).(subject{s}).JointVelocity = PullJointVelocityViconFRB(vicon, subject{s}, vicon.GetFrameRate);
+                fprintf('    Joint Velocity Collected\n')
             catch
-                disp('    No Joint Velocity Data')
+                fprintf('    No Joint Velocity Data\n')
             end
         end
         
@@ -106,50 +101,51 @@ for t = 1:trialNum
         if bool_Jmom
             try
                 Data.(trialNameClean).(subject{s}).JointMoment = PullJointMomentViconFRB(vicon, subject{s});
-                disp('    Joint Moments Collected')
+                fprintf('    Joint Moments Collected\n')
             catch
-                disp('    No Joint Moment Data')
+                fprintf('    No Joint Moment Data\n')
             end
         end
         if bool_Jforce
             try
                 Data.(trialNameClean).(subject{s}).JointForce = PullJointForceViconFRB(vicon, subject{s});
-                disp('    Joint Forces Collected')
+                fprintf('    Joint Forces Collected\n')
             catch
-                disp('    No Joint Force Data')
+                fprintf('    No Joint Force Data')
             end
         end
         if bool_Jpow
             try
                 Data.(trialNameClean).(subject{s}).JointPower = PullJointPowerViconFRB(vicon, subject{s});
-                disp('    Joint Powers Collected')
+                fprintf('    Joint Powers Collected\n')
             catch
-                disp('    No Joint Power Data')
+                fprintf('    No Joint Power Data\n')
             end
         end
         
         %% Misc Data
         if bool_event
-            %if you want to add other events, input the name as a third argument as a string
+            %if you want to add other events, input the name as a third argument as a comma separated list
             try
-                Data.(trialNameClean).(subject{s}).Events = PullEventsViconFRB(vicon, subject{s}, 'hopStart');
-                disp('    Events Collected')
+                Data.(trialNameClean).(subject{s}).Events = PullEventsViconFRB(vicon, subject{s}, ExpEvent);
+                fprintf('    Events Collected\n')
             catch
-                disp('    No Events Data')
+                fprintf('    No Events Data\n')
             end
         end
         if bool_subDet
             try
                 Data.(trialNameClean).(subject{s}).SubjectDetails = PullSubjectDetailsViconFRB(vicon, subject{s});
-                disp('    Subject Details Collected')
+                fprintf('    Subject Details Collected\n')
             catch
-                disp('    No Subject Details')
+                fprintf('    No Subject Details\n')
             end
         end
     end
 end
-cd(targetPath);
 eval([structureName ' = Data;']);
 clear Data
-save(structureName,structureName,'-v7.3')
-disp('Mischief Managed')
+strucfile = fullfile(targetPath, [structureName '.mat']);
+fprintf('Saving Structure... ')
+save(strucfile,'-v7.3')
+fprintf('Saved.\n  ~*Mischief Managed*~\n')
