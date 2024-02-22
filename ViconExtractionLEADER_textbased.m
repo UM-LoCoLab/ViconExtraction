@@ -8,10 +8,11 @@
 %-added AMTI and Kistler Force Plates
 %-gloabal CoP
 %Emma Reznick 2023 -- updated to match GUI
+% Katharine Walters 02/22/2024 - Updated to pull Kistler stair forceplates
 
 %% Connect to Vicon Nexus
-addpath('C:\Program Files (x86)\Vicon\Nexus2.12\SDK\Matlab')
-addpath('C:\Program Files (x86)\Vicon\Nexus2.12\SDK\Win64')
+addpath('C:\Program Files\Vicon\Nexus2.15\SDK\Matlab')
+addpath('C:\Program Files\Vicon\Nexus2.15\SDK\Win64')
 vicon = ViconNexus;
 
 structureName = input('Structure Name:','s');
@@ -21,14 +22,14 @@ structureName = input('Structure Name:','s');
     'MultiSelect', 'on');
 
 %targetPath = pwd;%pwd'C:\Users\hframe\Desktop\HoppingData'; %%FILL IN
-targetPath = 'E:\Cara\TFExperiments\TF03\070822';
+targetPath = 'L:\Member Folders\Katharine Walters';
 
 %Select Desired Trials
-bool_FP = false;
+bool_FP = true;
 bool_marker = true;
 bool_Jangle = true;
-bool_Jvel = false;
-bool_Jmom = false;
+bool_Jvel = true;
+bool_Jmom = true;
 bool_Jforce = false;
 bool_Jpow = false;
 bool_event = false;
