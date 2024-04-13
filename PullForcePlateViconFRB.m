@@ -10,7 +10,8 @@ OutputName = {'Force' 'Moment' 'CoP'};
 for i = 1:numel(deviceIDs)
     try
         DeviceName = vicon.GetDeviceDetails(deviceIDs(i));
-        if contains(DeviceName, 'AMTI') || isempty(DeviceName) 
+        % disp(strcat(string(deviceIDs(i)), ' ', DeviceName))
+        if contains(DeviceName, 'AMTI') 
             outputIDs = [1,2,3]; %force, moment, Cop
         elseif  contains(DeviceName, 'Handrail')
             outputIDs = 1; %force only
@@ -20,8 +21,9 @@ for i = 1:numel(deviceIDs)
             outputIDs = [1,2,3]; %force, moment, Cop
         elseif contains(DeviceName, 'Stair') 
             outputIDs = [1,2,3]; % force, moment, COP
+        elseif isempty(DeviceName)
+            continue
         end
-        
         %Get Data from x,y,z components of applicable output
         for j = outputIDs
             ForcePlate.(DeviceName(find(~isspace(DeviceName)))).(OutputName{j}) = [vicon.GetDeviceChannelGlobal(deviceIDs(i),j,1)'...

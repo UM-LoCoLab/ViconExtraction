@@ -9,9 +9,10 @@
 %-gloabal CoP
 %Emma Reznick 2023 -- updated to match GUI
 % Katharine Walters 02/22/2024 - Updated to pull Kistler stair forceplates
+% Katharine Walters 04/13/2024 - Updated to pull EMG (Delsys digital device)
 
 %% Connect to Vicon Nexus
-addpath('C:\Program Files\Vicon\Nexus2.15\SDK\Matlab')
+addpath('C:\Program Files\Vicon\Nexus2.15\SDK\MATLAB')
 addpath('C:\Program Files\Vicon\Nexus2.15\SDK\Win64')
 vicon = ViconNexus;
 
@@ -26,10 +27,11 @@ targetPath = 'L:\Member Folders\Katharine Walters';
 
 %Select Desired Trials
 bool_FP = true;
+bool_EMG = true;
 bool_marker = true;
-bool_Jangle = true;
-bool_Jvel = true;
-bool_Jmom = true;
+bool_Jangle = false;
+bool_Jvel = false;
+bool_Jmom = false;
 bool_Jforce = false;
 bool_Jpow = false;
 bool_event = false;
@@ -50,7 +52,7 @@ for t = 1:trialNum
     end
     trialPath = [data_path, trialName];
     fprintf(['Opening ' trialName '\n'])
-    vicon.OpenTrial(trialPath,30)
+    vicon.OpenTrial(trialPath,60)
     trialNameClean = trialName(find(~isspace(trialName)));
     %Check for multiple subjects
     [subject, ~, active] = vicon.GetSubjectInfo;
@@ -63,6 +65,14 @@ for t = 1:trialNum
         end
 
     %%Raw Data
+        if bool_EMG
+            try
+                Data.(trialNameClean).(subject{s}).EMG = PullEMGViconFRB(vicon);
+                fprintf('    EMG Collected\n')
+            catch
+                fprintf('    No EMG Data\n')
+            end
+        end
         if bool_FP
             try
                 Data.(trialNameClean).(subject{s}).ForcePlate = PullForcePlateViconFRB(vicon);
