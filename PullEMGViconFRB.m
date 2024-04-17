@@ -11,7 +11,11 @@ for i = 1:numel(deviceIDs)
     DeviceName = vicon.GetDeviceDetails(deviceIDs(i));
     % disp(strcat(string(deviceIDs(i)), ' ', DeviceName))
     if isempty(DeviceName)
-        emg_IDs = [emg_IDs, deviceIDs(i)];
+        try
+            vicon.GetDeviceChannelGlobal(deviceIDs(i),1,2);
+        catch
+            emg_IDs = [emg_IDs, deviceIDs(i)];
+        end
     end
 end
 
