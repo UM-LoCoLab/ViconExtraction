@@ -19,13 +19,14 @@ function structureName = ViconExtractionLEADER_textbased()
 bool_FP = true;
 bool_EMG = false;
 bool_marker = true;
-bool_Jangle = false;
-bool_Jvel = false;
-bool_Jmom = false;
-bool_Jforce = false;
-bool_Jpow = false;
-bool_event = false;
-bool_subDet = false;
+bool_Jangle = true;
+bool_Jvel = true;
+bool_Jmom = true;
+bool_Jforce = true;
+bool_Jpow = true;
+bool_event = true;
+bool_subDet = true;
+bool_centers = true;
 
 %% Connect to Vicon Nexus
 warning('off','MATLAB:mpath:nameNonexistentOrNotADirectory')
@@ -156,6 +157,7 @@ for t = 1:trialNum
         
         %% Misc Data
         if bool_event
+            ExpEvent = ''; %LHS,LTO,RHS,RTO
             %if you want to add other events, input the name as a third argument as a comma separated list
             try
                 Data.(trialNameClean).(subject{s}).Events = PullEventsViconFRB(vicon, subject{s}, ExpEvent);
@@ -170,6 +172,15 @@ for t = 1:trialNum
                 fprintf('    Subject Details Collected\n')
             catch
                 fprintf('    No Subject Details\n')
+            end
+        end
+        
+        if bool_centers
+            try
+                Data.(trialNameClean).(subject{s}).JointCenters = PullJointCentersViconFRB(vicon, subject{s});
+                fprintf('    Joint Centers Collected\n')
+            catch
+                fprintf('    No Joint Centers\n')
             end
         end
     end

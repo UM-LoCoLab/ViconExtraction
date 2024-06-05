@@ -12,8 +12,3 @@ for o = 1:numel(outputs)
     end
 end
 
-
-
-
-
-

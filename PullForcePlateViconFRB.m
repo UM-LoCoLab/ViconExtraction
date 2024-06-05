@@ -3,6 +3,8 @@
 %Emma Reznick 04/04/2022 Update: Added AMTI and Kistler Plates, added
 %global CoP
 % Katharine Walters 02/22/2024 Update: Added Kistler stair force plates
+% Emily Keller 06/04/2024 Update: - added hexapod to name options
+%                                 - added print about empty name
 
 function ForcePlate = PullForcePlateViconFRB(vicon)
 deviceIDs = vicon.GetDeviceIDs; %leftFP, rightFP, LRail, RRail, AMTI1, AMTI2, AMTI3, Stair1, Stair2, Stair3, Stair4, Stair5
@@ -17,11 +19,12 @@ for i = 1:numel(deviceIDs)
             outputIDs = 1; %force only
             ind = strfind(DeviceName, ' ');
             DeviceName(ind) = [];
-        elseif contains(DeviceName, 'ForcePlate') || contains(DeviceName, 'Kistler')
+        elseif contains(DeviceName, 'ForcePlate') || contains(DeviceName, 'Kistler') || contains(DeviceName, 'Hexapod')
             outputIDs = [1,2,3]; %force, moment, Cop
         elseif contains(DeviceName, 'Stair') 
             outputIDs = [1,2,3]; % force, moment, COP
         elseif isempty(DeviceName)
+            fprintf('    *** Empty Force Plate Name ***\n')
             continue
         end
         %Get Data from x,y,z components of applicable output

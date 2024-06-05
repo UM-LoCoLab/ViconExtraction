@@ -50,5 +50,4 @@ if ~isempty(eventName)
         end
     end
     
-    
 end
