@@ -27,6 +27,7 @@ bool_Jpow = true;
 bool_event = true;
 bool_subDet = true;
 bool_centers = true;
+bool_bones = true;
 
 %% Connect to Vicon Nexus
 warning('off','MATLAB:mpath:nameNonexistentOrNotADirectory')
@@ -181,6 +182,15 @@ for t = 1:trialNum
                 fprintf('    Joint Centers Collected\n')
             catch
                 fprintf('    No Joint Centers\n')
+            end
+        end
+        
+        if bool_bones
+            try
+                Data.(trialNameClean).(subject{s}).Bones = PullBonesViconFRB(vicon, subject{s});
+                fprintf('    Bones Collected\n')
+            catch
+                fprintf('    No Bones\n')
             end
         end
     end
