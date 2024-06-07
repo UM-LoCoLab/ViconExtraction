@@ -9,6 +9,9 @@ for i = 1:numel(deviceIDs)
     %Get and clean device name
     [DeviceName,~,DeviceRate,outputID,~,~] = vicon.GetDeviceDetails(deviceIDs(i));
     DeviceName = cleanName(DeviceName);
+    if isempty(DeviceName)
+        continue;
+    end
     try 
         tempTab = table;
         for j = outputID

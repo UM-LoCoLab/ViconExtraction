@@ -1,4 +1,4 @@
-function structureName = ViconExtractionLEADER_textbased()
+function Data = ViconExtractionLEADER_textbased()
 %VICON EXTRACTION MASTER
 %Save Vicon Data Into Matlab Struct
 
@@ -14,9 +14,11 @@ function structureName = ViconExtractionLEADER_textbased()
 % Kevin Best 06/4/2024 - Added 2.16 SDK paths, general path improvements.
 %                      - Made into a function to allow for persistent vars
 
+addpath("SubfunctionsGENERAL\")
 % CONFIGURATION:
 % Select Desired Trials
 bool_FP = true;
+bool_RawPin = true; %Need to have both FP and RawPin to extract
 bool_EMG = false;
 bool_marker = true;
 bool_Jangle = true;
@@ -87,26 +89,9 @@ for t = 1:trialNum
         end
 
     %%Raw Data
-        if bool_EMG
-            try
-                Data.(trialNameClean).(subject{s}).EMG = PullEMGViconFRB(vicon);
-                fprintf('    EMG Collected\n')
-            catch
-                fprintf('    No EMG Data\n')
-            end
-        end
-        if bool_FP
-            try
-                Data.(trialNameClean).(subject{s}).ForcePlate = PullForcePlateViconFRB(vicon);
-                fprintf('    Force Plates Collected\n')
-            catch
-                fprintf('    No FP Data\n')
-            end
-            
-        end
         if bool_marker
             try
-                Data.(trialNameClean).(subject{s}).Markers = PullMarkerViconFRB(vicon, subject{s});
+                Data.(trialNameClean).(subject{s}).Markers = PullMarkerVicon(vicon, subject{s});
                 fprintf('    Markers Collected\n')
             catch
                 fprintf('    No Marker Data\n')
@@ -115,7 +100,7 @@ for t = 1:trialNum
         %% Modeled Kinematics
         if bool_Jangle
             try
-                Data.(trialNameClean).(subject{s}).JointAngle = PullJointAngleViconFRB(vicon, subject{s});
+                Data.(trialNameClean).(subject{s}).JointAngle = PullJointAngles(vicon, subject{s});
                 fprintf('    Joint Angles Collected\n')
             catch
                 fprintf('    No Joint Angle Data\n')
@@ -123,7 +108,7 @@ for t = 1:trialNum
         end
         if bool_Jvel
             try
-                Data.(trialNameClean).(subject{s}).JointVelocity = PullJointVelocityViconFRB(vicon, subject{s}, vicon.GetFrameRate);
+                Data.(trialNameClean).(subject{s}).JointVelocity = PullJointVelocity(vicon, subject{s}, vicon.GetFrameRate);
                 fprintf('    Joint Velocity Collected\n')
             catch
                 fprintf('    No Joint Velocity Data\n')
@@ -133,7 +118,7 @@ for t = 1:trialNum
         %% Modeled Kinetics
         if bool_Jmom
             try
-                Data.(trialNameClean).(subject{s}).JointMoment = PullJointMomentViconFRB(vicon, subject{s});
+                Data.(trialNameClean).(subject{s}).JointMoment = PullJointMoments(vicon, subject{s});
                 fprintf('    Joint Moments Collected\n')
             catch
                 fprintf('    No Joint Moment Data\n')
@@ -141,7 +126,7 @@ for t = 1:trialNum
         end
         if bool_Jforce
             try
-                Data.(trialNameClean).(subject{s}).JointForce = PullJointForceViconFRB(vicon, subject{s});
+                Data.(trialNameClean).(subject{s}).JointForce = PullJointForces(vicon, subject{s});
                 fprintf('    Joint Forces Collected\n')
             catch
                 fprintf('    No Joint Force Data')
@@ -149,7 +134,7 @@ for t = 1:trialNum
         end
         if bool_Jpow
             try
-                Data.(trialNameClean).(subject{s}).JointPower = PullJointPowerViconFRB(vicon, subject{s});
+                Data.(trialNameClean).(subject{s}).JointPower = PullJointPowers(vicon, subject{s});
                 fprintf('    Joint Powers Collected\n')
             catch
                 fprintf('    No Joint Power Data\n')
@@ -161,7 +146,7 @@ for t = 1:trialNum
             ExpEvent = ''; %LHS,LTO,RHS,RTO
             %if you want to add other events, input the name as a third argument as a comma separated list
             try
-                Data.(trialNameClean).(subject{s}).Events = PullEventsViconFRB(vicon, subject{s}, ExpEvent);
+                Data.(trialNameClean).(subject{s}).Events = PullEvents(vicon, subject{s}, ExpEvent);
                 fprintf('    Events Collected\n')
             catch
                 fprintf('    No Events Data\n')
@@ -169,7 +154,7 @@ for t = 1:trialNum
         end
         if bool_subDet
             try
-                Data.(trialNameClean).(subject{s}).SubjectDetails = PullSubjectDetailsViconFRB(vicon, subject{s});
+                Data.(trialNameClean).(subject{s}).SubjectDetails = PullSubjectDetailsVicon(vicon, subject{s});
                 fprintf('    Subject Details Collected\n')
             catch
                 fprintf('    No Subject Details\n')
@@ -194,9 +179,26 @@ for t = 1:trialNum
             end
         end
     end
+    if bool_FP
+        try
+            Data.(trialNameClean).ForcePlates = PullForcePlate(vicon, bool_RawPin);
+            fprintf('    Force Plates Collected\n')
+        catch
+            fprintf('    No FP Data\n')
+        end
+    end
+    if bool_EMG
+        try
+            Data.(trialNameClean).(subject{s}).EMG = PullEMGViconFRB(vicon);
+            fprintf('    EMG Collected\n')
+        catch
+            fprintf('    No EMG Data\n')
+        end
+    end
 end
+
+%% Save
 eval([structureName ' = Data;']);
-clear Data
 strucfile = fullfile(targetPath, [structureName '.mat']);
 fprintf('Saving Structure... ')
 save(strucfile,structureName,'-v7.3')
