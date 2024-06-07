@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="4285298440" file="Z:\Member Folders\Emma Reznick\ViconDataExtraction\ViconExtraction.prj" location="Z:\Member Folders\Emma Reznick\ViconDataExtraction" name="ViconExtraction" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="2603275682" file="C:\Users\tkbest\Documents\ViconExtraction\GUI\ViconExtraction.prj" location="C:\Users\tkbest\Documents\ViconExtraction\GUI" name="ViconExtraction" target="target.mlapps" target-name="Package App">
     <param.appname>ViconExtraction</param.appname>
     <param.authnamewatermark>Emma Reznick</param.authnamewatermark>
     <param.email>reznick@umich.edu</param.email>
@@ -8,8 +8,8 @@
     <param.icons />
     <param.summary />
     <param.description />
-    <param.screenshot>C:\Users\reznick\AppData\Local\Temp\tp832b9356_0d1e_4f3d_a2e7_a775e192a530.png</param.screenshot>
-    <param.version>1.0</param.version>
+    <param.screenshot />
+    <param.version>1.1</param.version>
     <param.products.name>
       <item>MATLAB</item>
     </param.products.name>
@@ -17,7 +17,7 @@
       <item>1</item>
     </param.products.id>
     <param.products.version>
-      <item>9.10</item>
+      <item>9.14</item>
     </param.products.version>
     <param.platforms />
     <param.output>${PROJECT_ROOT}</param.output>
@@ -28,7 +28,7 @@
       <param.icons />
       <param.summary />
       <param.description />
-      <param.version />
+      <param.screenshot />
       <param.platforms />
       <param.output />
     </unset>
@@ -36,39 +36,39 @@
       <file>${PROJECT_ROOT}\ViconExtraction.mlapp</file>
     </fileset.main>
     <fileset.depfun>
-      <file>C:\Program Files (x86)\Vicon\Nexus2.12\SDK\MATLAB\NexusEyeTracker.m</file>
-      <file>C:\Program Files (x86)\Vicon\Nexus2.12\SDK\MATLAB\NexusForcePlate.m</file>
-      <file>C:\Program Files (x86)\Vicon\Nexus2.12\SDK\MATLAB\ViconNexus.m</file>
-      <file>${PROJECT_ROOT}\ddt.m</file>
-      <file>${PROJECT_ROOT}\filter22.m</file>
-      <file>${PROJECT_ROOT}\PullEventsViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullForcePlateViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullJointAngleViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullJointForceViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullJointMomentViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullJointPowerViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullJointVelocityViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullMarkerViconFRB.m</file>
-      <file>${PROJECT_ROOT}\PullSubjectDetailsViconFRB.m</file>
-      <file>${PROJECT_ROOT}\ViconExtractionLEADER.m</file>
+      <file>C:\Program Files\Vicon\Nexus2.16\SDK\MATLAB\NexusEyeTracker.m</file>
+      <file>C:\Program Files\Vicon\Nexus2.16\SDK\MATLAB\NexusForcePlate.m</file>
+      <file>C:\Program Files\Vicon\Nexus2.16\SDK\MATLAB\ViconNexus.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\cleanName.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\ddt.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\filter22.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\processTrials.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullBones.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullEMGViconFRB.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullEvents.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullForcePlate.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullJointAngles.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullJointCenters.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullJointForces.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullJointMoments.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullJointPowers.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullJointVelocity.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullMarkerVicon.m</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\Subfunctions\PullSubjectDetailsVicon.m</file>
     </fileset.depfun>
     <fileset.resources>
-      <file>${PROJECT_ROOT}\README.docx</file>
+      <file>C:\Users\tkbest\Documents\ViconExtraction\README.docx</file>
     </fileset.resources>
     <fileset.package />
     <build-deliverables>
-      <file location="Z:\Member Folders\Emma Reznick" name="ViconDataExtraction" optional="false">Z:\Member Folders\Emma Reznick\ViconDataExtraction</file>
+      <file location="C:\Users\tkbest\Documents\ViconExtraction" name="GUI" optional="false">C:\Users\tkbest\Documents\ViconExtraction\GUI</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2021a</root>
+      <root>C:\Program Files\MATLAB\R2023a</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
         <toolbox name="embeddedcoder" />
-        <toolbox name="gpucoder" />
-        <toolbox name="fixedpoint" />
-        <toolbox name="matlabhdlcoder" />
-        <toolbox name="neuralnetwork" />
       </toolboxes>
       <toolbox>
         <matlabcoder>
@@ -79,26 +79,6 @@
         <embeddedcoder>
           <enabled>true</enabled>
         </embeddedcoder>
-      </toolbox>
-      <toolbox>
-        <gpucoder>
-          <enabled>true</enabled>
-        </gpucoder>
-      </toolbox>
-      <toolbox>
-        <fixedpoint>
-          <enabled>true</enabled>
-        </fixedpoint>
-      </toolbox>
-      <toolbox>
-        <matlabhdlcoder>
-          <enabled>true</enabled>
-        </matlabhdlcoder>
-      </toolbox>
-      <toolbox>
-        <neuralnetwork>
-          <enabled>true</enabled>
-        </neuralnetwork>
       </toolbox>
     </matlab>
     <platform>
