@@ -142,6 +142,24 @@ for t = 1:trialNum
         end
         
         %% Misc Data
+        if bool_centers
+            try
+                Data.(trialNameClean).(subject{s}).JointCenters = PullJointCenters(vicon, subject{s});
+                fprintf('    Joint Centers Collected\n')
+            catch
+                fprintf('    No Joint Centers\n')
+            end
+        end
+        
+        if bool_bones
+            try
+                Data.(trialNameClean).(subject{s}).Bones = PullBones(vicon, subject{s});
+                fprintf('    Bones Collected\n')
+            catch
+                fprintf('    No Bones\n')
+            end
+        end
+        
         if bool_event
             ExpEvent = ''; %LHS,LTO,RHS,RTO
             %if you want to add other events, input the name as a third argument as a comma separated list
@@ -161,23 +179,6 @@ for t = 1:trialNum
             end
         end
         
-        if bool_centers
-            try
-                Data.(trialNameClean).(subject{s}).JointCenters = PullJointCentersViconFRB(vicon, subject{s});
-                fprintf('    Joint Centers Collected\n')
-            catch
-                fprintf('    No Joint Centers\n')
-            end
-        end
-        
-        if bool_bones
-            try
-                Data.(trialNameClean).(subject{s}).Bones = PullBonesViconFRB(vicon, subject{s});
-                fprintf('    Bones Collected\n')
-            catch
-                fprintf('    No Bones\n')
-            end
-        end
     end
     if bool_FP
         try
