@@ -1,5 +1,9 @@
 function Data = processTrials(vicon, structureName, trial, data_path, targetPath, bool_marker, bool_FP, bool_Jangle,...
     bool_Jvel, bool_Jmom, bool_Jpow, bool_Jforce, bool_event, bool_subDet, ExpEvent, bool_EMG, bool_bones, bool_centers)
+% Check for valid file name
+if ~isvarname(structureName)
+    error('Structure name must be a valid Matlab variable name. Do not start with numbers!')
+end
 %Loop Through Trials
 if iscell(trial)
     trialNum = numel(trial);
