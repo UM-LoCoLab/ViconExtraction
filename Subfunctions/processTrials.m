@@ -19,7 +19,7 @@ for t = 1:trialNum
     end
     trialPath = [data_path, trialName];
     fprintf(['Opening ' trialName '\n'])
-    vicon.OpenTrial(trialPath,60)
+%     vicon.OpenTrial(trialPath,60)
     trialNameClean = trialName(find(~isspace(trialName)));
     %Check for multiple subjects
     [subject, ~, active] = vicon.GetSubjectInfo;
