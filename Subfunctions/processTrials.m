@@ -129,7 +129,7 @@ for t = 1:trialNum
     end
     if bool_EMG
         try
-            Data.(trialNameClean).(subject{s}).EMG = PullEMGViconFRB(vicon);
+            Data.(trialNameClean).EMG = PullEMGViconFRB(vicon);
             fprintf('    EMG Collected\n')
         catch
             fprintf('    No EMG Data\n')
