@@ -9,7 +9,11 @@ tempTab = table;
 for o = 1:numel(outputs)
     if contains(outputs{o},'Angle')
         try
-            newName = strcat(outputs{o}(1:end-6), 'Velocity');
+            if contains(outputs{o},'_M')
+                newName = strcat(outputs{o}(1:end-8), 'Velocity_M');
+            else
+                newName = strcat(outputs{o}(1:end-6), 'Velocity');
+            end
             tempTab = [tempTab table(ddt(vicon.GetModelOutput(subject, outputs{o})', 1/sampleRate),'VariableNames', convertCharsToStrings(newName))];
             tempTab.(newName)(:,1) = tempTab.(newName)(:,1)*-1;
         catch 
